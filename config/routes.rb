@@ -4,6 +4,9 @@ Rails.application.routes.draw do
 
   # EXAMPLE JSON ROUTE WITH API NAMESPACE
   namespace :api do
-    get "/mini_capstone" => "products#products_method"
+    get "/all_products" => "products#all_products_method"
+    get "/first_product" => "products#first_product_method"
+    get "/second_product" => "products#second_product_method"
+    get "/third_product" => "products#third_product_method"
   end
 end
