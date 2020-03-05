@@ -4,6 +4,12 @@ class Api::ProductsController < ApplicationController
     render "all_products.json.jb"
   end
 
+  def any_product_method
+    number = params["product_number"]
+    @product = Product.find_by(id: number)
+    render "any_product.json.jb"
+  end
+
   def first_product_method
     @first_product = Product.first
     render "first_product.json.jb"

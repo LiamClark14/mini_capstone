@@ -8,5 +8,7 @@ Rails.application.routes.draw do
     get "/first_product" => "products#first_product_method"
     get "/second_product" => "products#second_product_method"
     get "/third_product" => "products#third_product_method"
+    get "/any_product/:product_number" => "products#any_product_method"
+    get "/any_product" => "products#any_product_method"
   end
 end
