@@ -2,7 +2,7 @@ require "http"
 require "tty-table"
 
 puts "Welcome to my shop!"
-response = HTTP.get("http://localhost:3000/api/all_products")
+response = HTTP.get("http://localhost:3000/api/products")
 product_data = response.parse
 
 pp product_data

@@ -1,0 +1,3 @@
+{
+  message: "The product with id #{@id} has been destroyed",
+}
