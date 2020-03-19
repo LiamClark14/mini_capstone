@@ -1,4 +1,6 @@
 class Api::ProductsController < ApplicationController
+  before_action :authenticate_admin, except: [:index, :show]
+
   def all_products_method
     @products = Product.all
     render "all_products.json.jb"
