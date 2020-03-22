@@ -2,18 +2,29 @@ class Api::OrdersController < ApplicationController
   before_action :authenticate_user
 
   def create
+    carted_products = current_user.carted_products.where(status: "carted")
+
+    calculated_subtotal = 0
+    calculated_tax = 0
+    calculated_total = 0
+
+    carted_products.each do |cp|
+      calculated_subtotal += cp.quantity * cp.product.price
+      calculated_tax += cp.quantity * cp.product.tax
+    end
+
+    calculated_total += calculated_subtotal + calculated_tax
     order = Order.new(
       user_id: current_user.id,
-      product_id: params[:product_id],
-      quantity: params[:quantity],
-      subtotal: params[:quantity].to_i * Product.find_by(id: params[:product_id]).price.to_i,
-      tax: (params[:quantity].to_i * Product.find_by(id: params[:product_id]).price.to_i) * 0.09,
-      total: (params[:quantity].to_i * Product.find_by(id: params[:product_id]).price.to_i) * 1.09,
+      subtotal: calculated_subtotal,
+      tax: calculated_tax,
+      total: calculated_total,
     )
     if order.save
-      render json: { message: "order created successfully" }, status: :created
+      carted_products.update_all(status: "purchased", order_id: @order.id)
+      render "show.json.jb"
     else
-      render json: { errors: order.errors.full_messages }, status: :bad_request
+      render json: { errors: order.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
